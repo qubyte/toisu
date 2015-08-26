@@ -2,19 +2,23 @@
   "name": "toisu",
   "version": "0.1.0",
   "description": "Inspired by Express and Koa, powered by async-await.",
-  "main": "index.js",
+  "main": "dist/toisu.es5.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
-    "test": "mocha test"
+    "test": "mocha test",
+    "prepublish": "babel toisu.js -o dist/toisu.es5.js",
+    "postpublish": "rimraf dist/toisu.es5.js"
   },
+  "files": [
+    "index.js",
+    "dist/toisu.es5.js"
+  ],
   "author": "Mark S. Everitt",
   "license": "MIT",
-  "dependencies": {
-    "babel": "5.8.21"
-  },
   "devDependencies": {
+    "babel": "5.8.21",
     "babel-eslint": "4.0.10",
     "eslint": "1.2.1",
     "mocha": "2.2.5",
