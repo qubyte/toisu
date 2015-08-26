@@ -1,26 +1,24 @@
 const stacks = new WeakMap();
 
-const handler = (function () {
-  return async function (instance, req, res) {
-    const context = new Map();
-    const stack = stacks.get(instance) || [];
+async function handler(instance, req, res) {
+  const context = new Map();
+  const stack = stacks.get(instance) || [];
 
-    for (const middleware of stack) {
-      try {
-        await middleware.call(context, req, res);
-      } catch (e) {
-        instance.handleError.call(context, req, res, e);
-      }
-
-      if (res.headersSent || !res.writable) {
-        break;
-      }
+  for (const middleware of stack) {
+    try {
+      await middleware.call(context, req, res);
+    } catch (e) {
+      instance.handleError.call(context, req, res, e);
     }
 
-    res.statusCode = 404;
-    res.end();
-  };
-}());
+    if (res.headersSent || !res.writable) {
+      break;
+    }
+  }
+
+  res.statusCode = 404;
+  res.end();
+}
 
 class Toisu {
   constructor() {
