@@ -1,6 +1,6 @@
 {
   "name": "toisu",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Inspired by Express and Koa, powered by async-await.",
   "main": "dist/toisu.es5.js",
   "directories": {
