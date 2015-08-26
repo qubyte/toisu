@@ -12,7 +12,7 @@
     "postpublish": "rimraf dist/toisu.es5.js"
   },
   "files": [
-    "index.js",
+    "toisu.js",
     "dist/toisu.es5.js"
   ],
   "author": "Mark S. Everitt",
