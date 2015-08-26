@@ -1,5 +1,5 @@
 {
-  "name": "Toisu",
+  "name": "toisu",
   "version": "0.0.1",
   "description": "Inspired by Express and Koa, powered by async-await.",
   "main": "index.js",
