@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Inspired by Express and Koa, powered by async-await.",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "test": "eslint . && mocha test"
   },
@@ -16,12 +13,12 @@
   "author": "Mark S. Everitt",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "1.2.1",
-    "mocha": "2.2.5",
-    "sandboxed-module": "2.0.2",
-    "sinon": "1.16.1"
+    "eslint": "~1.2.1",
+    "mocha": "~2.2.5",
+    "sandboxed-module": "~2.0.2",
+    "sinon": "~1.16.1"
   },
   "dependencies": {
-    "toisu-middleware-runner": "1.0.0"
+    "toisu-middleware-runner": "~1.0.0"
   }
 }
