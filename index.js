@@ -40,8 +40,10 @@ Toisu.prototype.use = function (middleware) {
 
 Object.defineProperty(Toisu.prototype, 'requestHandler', {
   get: function () {
+    var app = this;
+
     return function (req, res) {
-      return handler(this, req, res);
+      return handler(app, req, res);
     };
   }
 });
