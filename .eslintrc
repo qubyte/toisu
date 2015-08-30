@@ -1,13 +1,11 @@
 {
-  "parser": "babel-eslint",
   "env": {
-    "node": true,
-    "es6": true
+    "node": true
   },
   "rules": {
     "no-eval": 2,
     "no-console": 2,
-    "strict": 0,
+    "strict": [2, "global"],
     "guard-for-in": 2,
     "wrap-iife": 2,
     "new-cap": 2,
