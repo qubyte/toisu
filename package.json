@@ -13,12 +13,15 @@
   "author": "Mark S. Everitt",
   "license": "MIT",
   "devDependencies": {
-    "eslint": "~1.2.1",
-    "mocha": "~2.2.5",
+    "eslint": "^1.6.0",
+    "mocha": "^2.3.3",
     "sandboxed-module": "~2.0.2",
-    "sinon": "~1.16.1"
+    "sinon": "^1.17.1"
   },
   "dependencies": {
     "toisu-middleware-runner": "~1.0.0"
+  },
+  "engines": {
+    "node": ">=4.0.0"
   }
 }
