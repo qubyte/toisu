@@ -1,26 +1,23 @@
 'use strict';
 
-var assert = require('assert');
-var sinon = require('sinon');
-var SandboxedModule = require('sandboxed-module');
+const assert = require('assert');
+const sinon = require('sinon');
+const SandboxedModule = require('sandboxed-module');
 
-function Deferred() {
-  var deferred = this;
-
-  deferred.promise = new Promise(function (resolve, reject) {
-    deferred.resolve = resolve;
-    deferred.reject = reject;
-  });
+class Deferred {
+  constructor() {
+    this.promise = new Promise((resolve, reject) => Object.assign(this, { resolve, reject }));
+  }
 }
 
-describe('Toisu', function () {
-  var sandbox = sinon.sandbox.create();
+describe('Toisu', () => {
+  const sandbox = sinon.sandbox.create();
 
-  var Toisu;
-  var runnerDeferred;
-  var runnerStub;
+  let Toisu;
+  let runnerDeferred;
+  let runnerStub;
 
-  before(function () {
+  before(() => {
     runnerStub = sinon.stub().returns();
 
     Toisu = SandboxedModule.require('../', {
@@ -28,65 +25,53 @@ describe('Toisu', function () {
         'toisu-middleware-runner': runnerStub
       },
       globals: {
-        Map: Map
+        Map
       }
     });
   });
 
-  beforeEach(function () {
+  beforeEach(() => {
     runnerDeferred = new Deferred();
 
     runnerStub.returns(runnerDeferred.promise);
   });
 
-  afterEach(function () {
+  afterEach(() => {
     runnerStub.reset();
     sandbox.restore();
   });
 
-  it('is a function', function () {
+  it('is a function', () => {
     assert.equal(typeof Toisu, 'function');
   });
 
-  it('throws a TypeError when called without new', function () {
-    assert.throws(
-      function () {
-        return Toisu(); // eslint-disable-line new-cap
-      },
-      function (err) {
-        return err instanceof TypeError;
-      },
-      'Cannot call a class as a function'
-    );
-  });
-
-  it('constructs an instance', function () {
+  it('constructs an instance', () => {
     assert.ok(new Toisu() instanceof Toisu);
   });
 
-  describe('an instance', function () {
-    var instance;
+  describe('an instance', () => {
+    let instance;
 
-    beforeEach(function () {
+    beforeEach(() => {
       instance = new Toisu();
     });
 
-    it('has a use method', function () {
+    it('has a use method', () => {
       assert.equal(typeof instance.use, 'function');
     });
 
-    it('has a requestHandler method', function () {
+    it('has a requestHandler method', () => {
       assert.equal(typeof instance.requestHandler, 'function');
     });
 
-    describe('requestHandler', function () {
-      var app;
-      var req;
-      var res;
-      var statusCodeSetStub;
-      var promise;
+    describe('requestHandler', () => {
+      let app;
+      let req;
+      let res;
+      let statusCodeSetStub;
+      let promise;
 
-      beforeEach(function () {
+      beforeEach(() => {
         app = new Toisu();
 
         app.handleError = sandbox.stub().returns('test');
@@ -113,7 +98,7 @@ describe('Toisu', function () {
         promise = app.requestHandler(req, res);
       });
 
-      it('calls the runner with the request, the response, and the middleware stack', function () {
+      it('calls the runner with the request, the response, and the middleware stack', () => {
         assert.equal(runnerStub.callCount, 1);
         assert.deepEqual(runnerStub.args[0], [
           req,
@@ -122,38 +107,38 @@ describe('Toisu', function () {
         ]);
       });
 
-      it('calls the runner with a Map instance as its context', function () {
+      it('calls the runner with a Map instance as its context', () => {
         assert.ok(runnerStub.thisValues[0] instanceof Map);
       });
 
-      it('uses a different Map per request', function () {
-          app.requestHandler(req, res);
+      it('uses a different Map per request', () => {
+        app.requestHandler(req, res);
 
-          assert.notEqual(runnerStub.thisValues[0], runnerStub.thisValues[1]);
+        assert.notEqual(runnerStub.thisValues[0], runnerStub.thisValues[1]);
       });
 
-      describe('when the runner throws an error', function () {
-        beforeEach(function () {
+      describe('when the runner throws an error', () => {
+        beforeEach(() => {
           runnerDeferred.reject('an error');
 
           return promise;
         });
 
-        it('calls the errorHandler once', function () {
+        it('calls the errorHandler once', () => {
           assert.equal(app.handleError.callCount, 1);
         });
 
-        it('calls the errorHandler with the request, the response, and the error', function () {
+        it('calls the errorHandler with the request, the response, and the error', () => {
           assert.deepEqual(app.handleError.args[0], [req, res, 'an error']);
         });
 
-        it('calls the errorHandler with the context', function () {
+        it('calls the errorHandler with the context', () => {
           assert.equal(app.handleError.thisValues[0], runnerStub.thisValues[0]);
         });
       });
 
-      describe('when the runner called end on the request', function () {
-        beforeEach(function () {
+      describe('when the runner called end on the request', () => {
+        beforeEach(() => {
           res.headersSent = true;
 
           runnerDeferred.resolve();
@@ -161,28 +146,28 @@ describe('Toisu', function () {
           return promise;
         });
 
-        it('does not set the statusCode', function () {
+        it('does not set the statusCode', () => {
           assert.equal(statusCodeSetStub.callCount, 0);
         });
 
-        it('does not call end', function () {
+        it('does not call end', () => {
           assert.equal(res.end.callCount, 0);
         });
       });
 
-      describe('when the runner did not call end on the request', function () {
-        beforeEach(function () {
+      describe('when the runner did not call end on the request', () => {
+        beforeEach(() => {
           runnerDeferred.resolve();
 
           return promise;
         });
 
-        it('sets the statusCode to 404', function () {
+        it('sets the statusCode to 404', () => {
           assert.equal(statusCodeSetStub.callCount, 1);
           assert.equal(statusCodeSetStub.args[0][0], 404);
         });
 
-        it('calls end after setting the statusCode', function () {
+        it('calls end after setting the statusCode', () => {
           assert.equal(res.end.callCount, 1);
           assert.ok(res.end.calledAfter(statusCodeSetStub));
         });

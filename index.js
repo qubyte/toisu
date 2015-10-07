@@ -1,51 +1,43 @@
 'use strict';
 
-var runner = require('toisu-middleware-runner');
-var stacks = new WeakMap();
+const runner = require('toisu-middleware-runner');
+const stacks = new WeakMap();
+const errorHandlers = new WeakMap();
 
-function handler(instance, req, res) {
-  var stack = stacks.get(instance);
-  var context = new Map();
-
-  return runner.call(context, req, res, stack)
-    .then(function () {
-      if (!res.headersSent) {
-        res.statusCode = 404;
-        res.end();
-      }
-    })
-    .catch(function (error) {
-      instance.handleError.call(context, req, res, error);
-    });
-}
-
-function Toisu() {
-  if (!(this instanceof Toisu)) {
-    throw new TypeError('Cannot call a class as a function');
+class Toisu {
+  constructor() {
+    stacks.set(this, []);
+    this.handleError = Toisu.defaultHandleError;
   }
 
-  this.handleError = Toisu.defaultHandleError;
+  use(middleware) {
+    stacks.get(this).push(middleware);
+  }
 
-  stacks.set(this, []);
-}
+  setErrorHandler(handler) {
+    errorHandlers.set(this, handler);
+  }
 
-Toisu.defaultHandleError = function (req, res) {
-  res.statusCode = 502;
-  res.end();
-};
+  get requestHandler() {
+    return (req, res) => {
+      const stack = stacks.get(this);
+      const context = new Map();
 
-Toisu.prototype.use = function (middleware) {
-  stacks.get(this).push(middleware);
-};
-
-Object.defineProperty(Toisu.prototype, 'requestHandler', {
-  get: function () {
-    var app = this;
-
-    return function (req, res) {
-      return handler(app, req, res);
+      return runner.call(context, req, res, stack)
+        .then(() => {
+          if (!res.headersSent) {
+            res.statusCode = 404;
+            res.end();
+          }
+        })
+        .catch(error => this.handleError.call(context, req, res, error));
     };
   }
-});
+
+  static defaultHandleError(req, res) {
+    res.statusCode = 502;
+    res.end();
+  }
+}
 
 module.exports = Toisu;
