@@ -2,7 +2,6 @@
 
 const runner = require('toisu-middleware-runner');
 const stacks = new WeakMap();
-const errorHandlers = new WeakMap();
 
 class Toisu {
   constructor() {
@@ -12,10 +11,6 @@ class Toisu {
 
   use(middleware) {
     stacks.get(this).push(middleware);
-  }
-
-  setErrorHandler(handler) {
-    errorHandlers.set(this, handler);
   }
 
   get requestHandler() {
