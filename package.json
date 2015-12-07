@@ -1,6 +1,6 @@
 {
   "name": "toisu",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Inspired by Express and Koa, powered by async-await.",
   "main": "index.js",
   "scripts": {
@@ -23,8 +23,5 @@
   },
   "engines": {
     "node": ">=4.0.0"
-  },
-  "files": [
-    "index.js"
-  ]
+  }
 }
