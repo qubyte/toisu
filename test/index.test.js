@@ -60,6 +60,18 @@ describe('Toisu', () => {
       assert.equal(typeof instance.use, 'function');
     });
 
+    describe('use', () => {
+      let app;
+
+      beforeEach(() => {
+        app = new Toisu();
+      });
+
+      it('returns the app', () => {
+        assert.equal(app.use('something'), app);
+      });
+    });
+
     it('has a requestHandler method', () => {
       assert.equal(typeof instance.requestHandler, 'function');
     });
