@@ -11,6 +11,7 @@ class Toisu {
 
   use(middleware) {
     stacks.get(this).push(middleware);
+    return this;
   }
 
   get requestHandler() {
