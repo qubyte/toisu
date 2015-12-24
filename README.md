@@ -1,99 +1,93 @@
-# TOISU!
+# Toisu!
 
-Toisu is an Express/Koa inspired server micro-framework for Node.js, built for middleware written in ES 2016 `async-await` syntax (though you may use ES 5.1 + Promises if you like to use vanilla Node). Both Express and Koa impose a solution to handling asynchronicity. Now that JS is getting blessed syntax for it, it seemed to me time to revisit the problem and explore what the solution might look like.
+Toisu is a small framework to make creating Node.js servers in a modular way. It is conceptually
+similar to Express and Koa, but much smaller and built around requests handlers which return
+promises when they do asynchronous work.
 
-This framework intentionally does much less than Express, and even Koa. Out of the box Node gives you most of what you need to get information into and out of requests and responses. The rest of the logic can be supplied using middleware. To repeat that last point; Toisu is a _thin_ wrapper around what Node already gives you. It really just adds a uniform way to stack up both synchronous and asynchronous middleware.
+Toisu gives you a way of defining a sequence of things to do for each request. Out of the box, it
+does essentially this, plus a default `404` response and an error handler. All other behaviour can
+be achieved using modules. Body parsing, static file serving, routing by HTTP method and URL, and so
+on are done this way.
 
-## ES 2016 Example (needs babel):
+## Example
 
 ```javascript
-const Toisu = require('Toisu');
-const http = require('http');
-const posts = require('./lib/posts'); // Example module with db methods for a blog.
+const sendPlain = require('send-data/plain');
+const sendError = require('send-data/error');
+const getAccess = require('fictional-promise-returning-function');
 
+function checkAccess(req, res) {
+  return getAccess(req).then(authed => {
+    if (!authed) {
+      sendError(req, res, {statusCode: 401});
+    }
+  });
+}
+
+const app = new Toisu()
+  .use(checkAccess);
+  .use((req, res) => sendPlain(req, res, 'Hello, world!'));
+
+http.createServer(app.requestHandler).listen(3000);
+```
+
+## Why promises?
+
+Love them or hate them, promises are here to stay. On top of that, the upcoming async-await language
+feature uses promises behind the scenes. By returning promises from functions now, you'll be able to
+`await` them in the future. Take the `checkAccess` middleware in the above example. As an async
+function, which de-sugars to exactly the original, it looks like:
+
+```javascript
+async function checkAccess(req, res) {
+  const authed = await getAccess(req);
+
+  if (!authed) {
+    sendError(req, res, {statusCode: 401});
+  }
+}
+```
+
+## API
+
+### `new Toisu()`
+
+The `toisu` module is a class. Create an app instance by calling it with `new`.
+
+```javascript
+const Toisu = require('toisu');
 const app = new Toisu();
-
-// Adding asynchronous middleware to the stack.
-app.use(async function (req, res) {
-  this.set('posts', await posts.get());
-});
-
-// Adding synchronous middleware to the stack.
-app.use(function () {
-  let formattedPosts = '<ul>';
-
-  for (const post of this.get('posts')) {
-    formattedPosts += `<li>${post.title}</li>`;
-  }
-
-  formattedPosts += '</ul>';
-
-  this.set('formattedPosts', formattedPosts);
-});
-
-// Adding synchronous middleware to the stack. Middleware are executed in order of use.
-app.use(function (req, res) {
-  response.writeHead(200, {'Content-Type': 'text/html'});
-  res.end(`
-    <!doctype html>
-    <html>
-      <head><title>My Blog</title></head>
-      <body>${this.formattedPosts}</body>
-    </html>
-  `);
-});
-
-// Don't worry, app.requestHandler won't lose context.
-http.createServer(app.requestHandler).listen(3000);
 ```
 
-## ES 5.1 + Promises (Node 0.12 and up)
+### `app.use(middleware)`
 
-`async-await` is really just syntactic sugar for promises. If you want to use Toisu! without using `async-await`, then go right ahead! All you need to know is that an asynchronous middleware should return a promise. For example:
+Adds a middleware function to the stack. Each request is passed to middleware functions in the order
+in which they're added. If a middleware returns a promise, the next middleware is only executed when
+the promise resolves. If a middleware throws, or returns a rejected promise, the errorHandler is
+called.
 
-```javascript
-var Toisu = require('Toisu');
-var http = require('http');
-var posts = require('./lib/posts'); // Example module with db methods for a blog.
+### `app.handleError`
 
-var app = new Toisu();
+A function with the parameters `(req, res, error)`. By default this will be
+`Toisu.defaultHandleError`, which responds with status `502`. It may be replaced for custom
+behaviour.
 
-// Adding asynchronous middleware to the stack.
-app.use(function (req, res) {
-  var context = this;
+### `app.requestHandler`
 
-  return posts.get()
-    .then(function (postsData) {
-      context.set('posts', postsData);
-    });
-});
+A function with the parameters `(req, res)`. Pass this as the request handler to
+`http.createServer`.
 
-// Adding synchronous middleware to the stack.
-app.use(function () {
-  var formattedPosts = '<ul>';
-  var postData = this.get('posts');
+### middleware functions
 
-  for (var i = 0, len = postData.length; i < len; i++) {
-    formattedPosts += '<li>' + postData[i].title + '</li>';
-  }
+All middleware functions take `(req, res)`. If a middleware something asynchronous, it should return
+a promise which resolves once the asynchronous task has finished. The resolution value is ignored.
 
-  formattedPosts += '</ul>';
+## Behaviours of note:
 
-  this.set('formattedPosts', formattedPosts);
-});
-
-// Adding synchronous middleware to the stack. Middleware are executed in order of use.
-app.use(function (req, res) {
-  response.writeHead(200, {'Content-Type': 'text/html'});
-  res.end([
-    '<!doctype html>',
-    '<html>',
-    '  <head><title>My Blog</title></head>',
-    '  <body>' + this.get('formattedPosts') + '</body>',
-    '</html>'
-  ].join('\n'));
-});
-
-// Don't worry, app.requestHandler won't lose context.
-http.createServer(app.requestHandler).listen(3000);
-```
+ - Upon receiving a request, middlewares are called in order. If a middleware returns a promise,
+this promise must resolve before the next middleware is called. This avoids the need to have a
+`next` callback in middlewares, as is the case with Express.
+ - If a middleware throws or rejects a returned promise for a particular request, no more
+middlewares are called for it. Instead `app.handleError` is called.
+ - If a response has not been sent after the middlewares have all been called, the app will respond
+for you with a `404` status.
