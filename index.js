@@ -31,7 +31,7 @@ class Toisu {
   }
 
   static defaultHandleError(req, res) {
-    res.statusCode = 502;
+    res.statusCode = 500;
     res.end();
   }
 }
