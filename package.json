@@ -1,7 +1,7 @@
 {
   "name": "toisu",
   "version": "3.0.0",
-  "description": "Inspired by Express and Koa, powered by async-await.",
+  "description": "Minimalist server framework inspired by Express and Koa, powered by promises. Ready for async-await.",
   "main": "index.js",
   "scripts": {
     "test": "eslint . && mocha test"
