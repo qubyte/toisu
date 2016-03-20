@@ -15,8 +15,9 @@ class Toisu {
   }
 
   get requestHandler() {
+    const stack = stacks.get(this);
+
     return (req, res) => {
-      const stack = stacks.get(this);
       const context = new Map();
 
       return runner.call(context, req, res, stack)
