@@ -1,6 +1,6 @@
 {
   "name": "toisu",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Minimalist server framework inspired by Express and Koa, powered by promises. Ready for async-await.",
   "main": "index.js",
   "scripts": {
