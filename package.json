@@ -23,5 +23,18 @@
   },
   "engines": {
     "node": ">=4.0.0"
-  }
+  },
+  "keywords": [
+    "server",
+    "middleware",
+    "framework",
+    "application",
+    "http",
+    "app",
+    "web",
+    "toisu",
+    "express",
+    "koa",
+    "async-await"
+  ]
 }
