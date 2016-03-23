@@ -13,6 +13,7 @@
   "author": "Mark S. Everitt",
   "license": "MIT",
   "devDependencies": {
+    "es2015-deferred": "^1.0.0",
     "eslint": "^1.6.0",
     "mocha": "^2.3.3",
     "sandboxed-module": "~2.0.2",

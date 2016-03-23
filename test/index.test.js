@@ -3,12 +3,7 @@
 const assert = require('assert');
 const sinon = require('sinon');
 const SandboxedModule = require('sandboxed-module');
-
-class Deferred {
-  constructor() {
-    this.promise = new Promise((resolve, reject) => Object.assign(this, { resolve, reject }));
-  }
-}
+const Deferred = require('es2015-deferred');
 
 describe('Toisu', () => {
   const sandbox = sinon.sandbox.create();
