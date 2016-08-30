@@ -3,6 +3,6 @@
     "mocha": true
   },
   "rules": {
-    "max-statements": 0
+    "max-statements": "off"
   }
 }

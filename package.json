@@ -10,20 +10,25 @@
     "index.js"
   ],
   "repository": "qubyte/toisu",
+  "homepage": "https://github.com/qubyte/toisu",
   "author": "Mark S. Everitt",
   "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/qubyte/toisu/issues"
+  },
   "devDependencies": {
-    "es2015-deferred": "^1.0.0",
-    "eslint": "^1.6.0",
-    "mocha": "^2.3.3",
-    "sandboxed-module": "~2.0.2",
-    "sinon": "^1.17.1"
+    "es2015-deferred": "2.0.1",
+    "eslint": "3.4.0",
+    "eslint-config-qubyte": "1.0.1",
+    "mocha": "3.0.2",
+    "sandboxed-module": "2.0.3",
+    "sinon": "1.17.5"
   },
   "dependencies": {
     "toisu-middleware-runner": "~1.0.0"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4.2.0"
   },
   "keywords": [
     "server",
