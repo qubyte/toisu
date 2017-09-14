@@ -2,5 +2,5 @@
   "env": {
     "node": true
   },
-  "extends": "qubyte/ES2015"
+  "extends": "qubyte/ES2017"
 }
