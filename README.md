@@ -1,5 +1,7 @@
 # TOISU!
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/qubyte/toisu.svg)](https://greenkeeper.io/)
+
 Toisu! is an Express/Koa inspired server micro-framework for Node.js. Toisu!:
 
  - Follows the tiny module dogma. Functionality is provided by modules.
