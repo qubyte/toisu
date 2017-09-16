@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "es2015-deferred": "3.0.0",
-    "eslint": "4.6.1",
+    "eslint": "4.7.0",
     "eslint-config-qubyte": "1.1.0",
     "mocha": "3.5.3",
     "sandboxed-module": "2.0.3",
