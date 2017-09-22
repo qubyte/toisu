@@ -17,12 +17,12 @@
     "url": "https://github.com/qubyte/toisu/issues"
   },
   "devDependencies": {
-    "es2015-deferred": "3.0.0",
-    "eslint": "4.7.1",
-    "eslint-config-qubyte": "1.1.0",
-    "mocha": "3.5.3",
-    "sandboxed-module": "2.0.3",
-    "sinon": "3.3.0"
+    "es2015-deferred": "~3.0.0",
+    "eslint": "~4.7.2",
+    "eslint-config-qubyte": "~1.1.0",
+    "mocha": "~3.5.3",
+    "sandboxed-module": "~2.0.3",
+    "sinon": "~3.3.0"
   },
   "dependencies": {
     "toisu-middleware-runner": "~2.0.0"
