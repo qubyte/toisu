@@ -22,7 +22,7 @@
     "eslint": "~4.19.0",
     "mocha": "~5.2.0",
     "sandboxed-module": "~2.0.3",
-    "sinon": "~5.0.0"
+    "sinon": "~5.1.0"
   },
   "dependencies": {
     "toisu-middleware-runner": "~2.0.0"
