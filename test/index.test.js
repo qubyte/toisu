@@ -6,7 +6,7 @@ const SandboxedModule = require('sandboxed-module');
 const Deferred = require('es2015-deferred');
 
 describe('Toisu', () => {
-  const sandbox = sinon.sandbox.create();
+  const sandbox = sinon.createSandbox();
 
   let Toisu;
   let runnerDeferred;
