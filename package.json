@@ -18,11 +18,11 @@
   },
   "devDependencies": {
     "es2015-deferred": "~3.0.0",
-    "eslint": "^5.6.1",
+    "eslint": "^5.13.0",
     "eslint-config-qubyte": "~2.0.0",
     "mocha": "~5.2.0",
     "sandboxed-module": "~2.0.3",
-    "sinon": "^6.3.5"
+    "sinon": "^7.2.3"
   },
   "dependencies": {
     "toisu-middleware-runner": "~2.0.0"
