@@ -4,7 +4,8 @@
   "description": "Minimalist server framework inspired by Express and Koa, powered by promises. Ready for async-await.",
   "main": "index.js",
   "scripts": {
-    "test": "eslint . && mocha test"
+    "test": "mocha test",
+    "lint": "eslint ."
   },
   "files": [
     "index.js"
