@@ -23,7 +23,7 @@
     "eslint-config-qubyte": "~3.0.0",
     "mocha": "^7.0.1",
     "sandboxed-module": "~2.0.3",
-    "sinon": "^8.0.0"
+    "sinon": "^9.0.0"
   },
   "dependencies": {
     "toisu-middleware-runner": "^2.0.1"
