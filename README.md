@@ -23,14 +23,15 @@ Toisu is tested to work with Node 4.2 and up.
 ## An example server
 
 ```javascript
-const http = require('http');
+import http from 'http';
 
 // http is a Node core module. The following modules need to be added to your
 // package.json file if you want to try out this example:
 // npm i -S toisu toisu-router toisu-body
-const Toisu = require('toisu');
-const Router = require('toisu-router');
-const body = require('toisu-body');
+import Toisu from 'toisu';
+import Router from 'toisu-router';
+import body from 'toisu-body';
+import { setTimeout as timeout } from 'timers/promises';
 
 // A middleware function to build some response data from. Uses data appended
 // to the shared context by the body parser (body) and the router (params). It
@@ -49,7 +50,7 @@ function assembleData(req, res) {
 
 // A middleware which introduces an artificial delay for demonstration.
 function delay(req, res) {
-  return new Promise(resolve => setTimeout(resolve, 100));
+  return timeout(100);
 }
 
 // A middleware to grab the data assembled in previous middlewares, and respond
@@ -61,8 +62,7 @@ function sendData(req, res) {
   res.writeHead(200, {
     'Content-Type': 'application/json',
     'Content-Length': Buffer.byteLength(stringified)
-  });
-  res.end(stringified);
+  }).end(stringified);
 }
 
 // Create a router object for handling URL path and HTTP method specific logic.
@@ -102,8 +102,7 @@ return promises may be awaited when async-await is available in the future. For
 example:
 
 ```javascript
-// Wrap setTimout in a function which returns a promise.
-const timeout = dt => new Promise(resolve => setTimeout(resolve, dt));
+import { setTimeout as timeout } from 'timers/promises';
 
 // Asynchronous functions can await promises.
 async function delay(req, res) {
