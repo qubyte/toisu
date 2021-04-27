@@ -1,9 +1,8 @@
-'use strict';
+import runner from 'toisu-middleware-runner';
 
-const runner = require('toisu-middleware-runner');
 const stacks = new WeakMap();
 
-class Toisu {
+export default class Toisu {
   constructor() {
     stacks.set(this, []);
     this.handleError = Toisu.defaultHandleError;
@@ -36,5 +35,3 @@ class Toisu {
     res.end();
   }
 }
-
-module.exports = Toisu;

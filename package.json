@@ -3,13 +3,12 @@
   "version": "3.0.6",
   "description": "Minimalist server framework inspired by Express and Koa, powered by promises. Ready for async-await.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "mocha test",
     "lint": "eslint ."
   },
-  "files": [
-    "index.js"
-  ],
+  "files": [],
   "repository": "qubyte/toisu",
   "homepage": "https://github.com/qubyte/toisu",
   "author": "Mark S. Everitt",
@@ -18,18 +17,16 @@
     "url": "https://github.com/qubyte/toisu/issues"
   },
   "devDependencies": {
-    "es2015-deferred": "~3.0.0",
-    "eslint": "^6.8.0",
-    "eslint-config-qubyte": "~3.0.0",
-    "mocha": "^7.1.1",
-    "sandboxed-module": "^2.0.4",
-    "sinon": "^9.0.2"
+    "eslint": "^7.25.0",
+    "eslint-config-qubyte": "^4.1.0",
+    "mocha": "^8.3.2",
+    "supertest": "^6.1.3"
   },
   "dependencies": {
-    "toisu-middleware-runner": "^2.0.1"
+    "toisu-middleware-runner": "^3.0.2"
   },
   "engines": {
-    "node": ">=8"
+    "node": ">=14"
   },
   "keywords": [
     "server",
