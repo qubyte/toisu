@@ -2,7 +2,7 @@ import { strict as assert } from 'assert';
 import supertest from 'supertest';
 import Toisu from '../index.js';
 
-describe.only('Toisu', () => {
+describe('Toisu', () => {
   it('is a function', () => {
     assert.equal(typeof Toisu, 'function');
   });
