@@ -2,21 +2,21 @@ name: CI
 on:
   push:
     branches:
-    - master
+    - main
   pull_request:
     branches:
-    - master
+    - main
 jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node_version: [8, 10, 12]
+        node_version: [14, 16]
     steps:
     - name: checkout
-      uses: actions/checkout@master
+      uses: actions/checkout@main
     - name: use node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         version: ${{ matrix.node_version }}
     - run: npm ci
@@ -25,10 +25,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: checkout
-      uses: actions/checkout@master
-    - name: use node 12
-      uses: actions/setup-node@v1
+      uses: actions/checkout@main
+    - name: use node 14
+      uses: actions/setup-node@v2
       with:
-        version: 12.x
+        version: 14.x
     - run: npm ci
     - run: npm run lint
