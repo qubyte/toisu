@@ -1,3 +1,5 @@
+This repository is now a part of [qubyte/toisu-monorepo](https://github.com/qubyte/toisu-monorepo).
+
 # TOISU!
 
 Toisu! is an Express/Koa inspired server micro-framework for Node.js. Toisu!:
